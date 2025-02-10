@@ -19,16 +19,17 @@ const LoginForm = () => {
         const formData = new FormData(event.currentTarget);
         const ci = formData.get('ci') as string;
         const password = formData.get('password') as string;
-
+        console.log("Ci:" + ci);
+        console.log("Password:" + password);
         try {
             // Hacer la solicitud al backend
-            const response = await fetch('https://5fa7-189-28-75-153.ngrok-free.app/auth/login', {
+            const response = await fetch('https://8bc6-189-28-75-153.ngrok-free.app/auth/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                },
+                  'Content-Type': 'application/json',
+                },    
                 body: JSON.stringify({ ci, password }),
-            });
+            }); 
 
             // Verificar si la respuesta es exitosa
             if (!response.ok) {
@@ -39,8 +40,14 @@ const LoginForm = () => {
             const data = await response.json();
             console.log('Respuesta del backend:', data);
 
-            // Guardar el token en localstorage
+            // Guardar el token en localstorage y en las cookies
             localStorage.setItem('token', data.token);
+
+            // Guardar el token en una cookie
+            setCookie('token', data.token, { maxAge: 60 * 60 * 24 }); // Expira en 1 día
+
+            //guardar el user_id en localstorage:
+            localStorage.setItem('user_id', data.user_id);
             
             
             // Guardar el user_id en una cookie

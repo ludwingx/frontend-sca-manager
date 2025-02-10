@@ -1,12 +1,12 @@
 // middleware.ts
 import { NextResponse, type NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
 
 export async function middleware(request: NextRequest) {
-  const token = (await localStorage.getItem('token') || '').toString();
-  
+  // Obtén el token desde las cookies
+  const token = request.cookies.get('token');
+
   // Rutas públicas (no requieren autenticación)
-  const publicPaths = ['/auth/signin', '/auth/signup']; // Añade aquí las rutas públicas
+  const publicPaths = ['/auth/signin']; // Añade aquí las rutas públicas
   const isPublicPath = publicPaths.includes(request.nextUrl.pathname);
 
   // Si no hay token y la ruta no es pública, redirigir a /auth/signin

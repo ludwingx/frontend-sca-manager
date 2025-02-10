@@ -1,4 +1,3 @@
-'use client';
 import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -6,8 +5,6 @@ import AuthLayout from "@/components/Layouts/AuthLayout";
 import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 import LoginForm from "@/components/SignIn/loginForm";
 import { Metadata } from "next";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import router from "next/router";
 
 export const metadata: Metadata = {
@@ -17,16 +14,6 @@ export const metadata: Metadata = {
 
 const SignIn: React.FC = async () => {
 
-  useEffect(() => {
-    // Accede a localStorage solo en el cliente
-    const token = localStorage.getItem('token');
-
-
-    // Si el usuario está autenticado, redirigir al perfil
-    if (token) {
-      router.push('/profile');
-    }
-  }, [router]);
   return (
     <AuthLayout>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

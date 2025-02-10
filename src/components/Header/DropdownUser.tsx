@@ -11,6 +11,9 @@ const DropdownUser = () => {
     // Eliminar la cookie del token
     deleteCookie('token', { path: '/' });
     deleteCookie('user_id', { path: '/' });
+    //Eliminar el token del localstorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_id');
 
     // Redirigir al usuario a la página de login
     window.location.href = '/auth/signin';

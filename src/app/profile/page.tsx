@@ -5,62 +5,81 @@ import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
-  
-  const Profile = () => {
-    const [userData, setUserData] = useState<{ userId: string; name: string; ci: string } | null>(null);
-    const [loading, setLoading] = useState(true);
-    const router = useRouter();
-    
-    useEffect(() => {
-      const fetchUserProfile = async () => {
-        const token = getCookie('token'); 
-        const user_id = getCookie('user_id'); 
-      
-        if (!token) {
-          router.push('/auth/signin');
-          return;
-        }
-      
-        try {
-          const response = await fetch(`https://5fa7-189-28-75-153.ngrok-free.app/api/user/${user_id}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`, 
-              'Content-Type': 'application/json'
-            },
-          });
-      
-          console.log("📌 Headers enviados:", response.headers);
-      
-          if (!response.ok) {
-            throw new Error('Error al obtener los datos del usuario');
+const Profile = () => {
+  const [userData, setUserData] = useState<{ userId: string; name: string; ci: string } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3MyIsImlhdCI6MTczOTE5NjMyMywiZXhwIjoxNzM5MjgyNzIzfQ.0WoRkuTPMmjaZX3VSpqrKiVADMrlGL_j7aUl44Yv8z4";
+      const userId = localStorage.getItem('user_id');
+
+      if (!token) {
+        router.push('/auth/signin');
+        return;
+      }
+
+      try {
+        const response = await fetch('https://8bc6-189-28-75-153.ngrok-free.app/api/user/3', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
-      
+        });
+
+        console.log("📌 Headers enviados:", response.headers);
+        console.log("📌 URL de la solicitud:", response.url);
+        console.log("📌 Estado de la respuesta:", response.status);
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Error al obtener los datos del usuario: ${errorText}`);
+        }
+
+        // Verificar si la respuesta es JSON
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
           const data = await response.json();
           setUserData(data);
-        } catch (error) {
-          console.error('Error:', error);
-        } finally {
-          setLoading(false); // Esto asegura que se actualice el estado después de obtener los datos o al ocurrir un error
+        } else {
+          const errorText = await response.text();
+          throw new Error(`Respuesta inesperada: ${errorText}`);
         }
-      };
-  
-      fetchUserProfile();
-    }, [router]);
-  
-    if (loading) {
-      return <p>Cargando...</p>;
-    }
-  
-    if (!userData) {
-      return <p>No se encontraron datos del usuario.</p>;
-    }
+      } catch (error) {
+        console.error('Error:', error);
 
-  return (
+        // Verificar el tipo de `error`
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError('Ocurrió un error desconocido');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [router]);
+
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
+  if (!userData) {
+    return <p>No se encontraron datos del usuario.</p>;
+  }
+
+  return(
     <DefaultLayout>
       <div className="mx-auto max-w-242.5">
         <Breadcrumb pageName="Profile" />
