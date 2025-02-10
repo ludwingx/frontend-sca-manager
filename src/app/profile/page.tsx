@@ -33,8 +33,14 @@ const Profile = () => {
         });
 
         console.log("📌 Headers enviados:", response.headers);
+        //Bearer enviado
+        console.log("📌 Token enviado:", token);
         console.log("📌 URL de la solicitud:", response.url);
         console.log("📌 Estado de la respuesta:", response.status);
+
+        if(response.ok){
+          console.log("📌 Datos del usuario:", await response.json());
+        }
 
         if (!response.ok) {
           const errorText = await response.text();
