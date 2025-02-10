@@ -5,7 +5,6 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import SignupForm from "@/components/SingUp/registerForm";
 
 export const metadata: Metadata = {
   title: "Next.js SignUp Page | TailAdmin - Next.js Dashboard Template",
@@ -26,7 +25,6 @@ const SignUp: React.FC = () => {
                 Registrar Usuario
               </h2>
 
-              <SignupForm/>
             </div>
           </div>
           
