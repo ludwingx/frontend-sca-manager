@@ -18,10 +18,7 @@ const Profile = () => {
       const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3MyIsImlhdCI6MTczOTE5NjMyMywiZXhwIjoxNzM5MjgyNzIzfQ.0WoRkuTPMmjaZX3VSpqrKiVADMrlGL_j7aUl44Yv8z4";
       const userId = localStorage.getItem('user_id');
 
-      if (!token) {
-        router.push('/auth/signin');
-        return;
-      }
+
 
       try {
         const response = await fetch('https://8bc6-189-28-75-153.ngrok-free.app/api/user/3', {
