@@ -40,14 +40,14 @@ const LoginForm = () => {
             const data = await response.json();
             console.log('Respuesta del backend:', data);
 
-            // Guardar el token en localstorage y en las cookies
-            localStorage.setItem('token', data.token);
+            // // Guardar el token en localstorage y en las cookies
+            // localStorage.setItem('token', data.token);
 
             // Guardar el token en una cookie
             setCookie('token', data.token, { maxAge: 60 * 60 * 24 }); // Expira en 1 día
 
-            //guardar el user_id en localstorage:
-            localStorage.setItem('user_id', data.user_id);
+            // //guardar el user_id en localstorage:
+            // localStorage.setItem('user_id', data.user_id);
             
             
             // Guardar el user_id en una cookie

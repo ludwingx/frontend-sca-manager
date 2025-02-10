@@ -4,16 +4,16 @@ import Image from "next/image";
 import ClickOutside from "@/components/ClickOutside";
 import { cookies } from "next/headers";
 import { deleteCookie } from "cookies-next";
+import { fetchProfileData } from "@/app/profile/action";
 
-const DropdownUser = () => {
+const DropdownUser = async () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const handleLogout = () => {
     // Eliminar la cookie del token
     deleteCookie('token', { path: '/' });
     deleteCookie('user_id', { path: '/' });
     //Eliminar el token del localstorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('user_id');
+
 
     // Redirigir al usuario a la página de login
     window.location.href = '/auth/signin';
